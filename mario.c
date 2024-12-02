@@ -11,29 +11,26 @@ int main(void)
     }
     while (height < 1 || height > 8);
 
-    // Loop through each row
-    for (int row = 0; row < height; row++)
+    // For each row
+    for (int i = 0; i < height; i++)
     {
-        // Print spaces for left pyramid
-        // We need (height - 1) - row spaces
-        for (int space = 0; space < height - 1 - row; space++)
+        // Print leading spaces
+        for (int j = 0; j < height - i - 1; j++)
         {
             printf(" ");
         }
 
-        // Print hashes for left pyramid
-        // We need row + 1 hashes
-        for (int hash = 0; hash <= row; hash++)
+        // Print left-side hashes
+        for (int j = 0; j < i + 1; j++)
         {
             printf("#");
         }
 
-        // Print gap (always 2 spaces)
+        // Print the middle gap
         printf("  ");
 
-        // Print hashes for right pyramid
-        // We need row + 1 hashes again
-        for (int hash = 0; hash <= row; hash++)
+        // Print right-side hashes
+        for (int j = 0; j < i + 1; j++)
         {
             printf("#");
         }
