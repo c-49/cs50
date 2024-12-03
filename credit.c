@@ -1,6 +1,9 @@
 #include <cs50.h>
 #include <stdio.h>
+#include <math.h>
+#include <stdbool.h>
 
+// Function prototypes
 int get_length(long number);
 bool check_luhn(long number);
 int get_first_digits(long number, int n);
