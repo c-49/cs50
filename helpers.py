@@ -1,7 +1,8 @@
 import requests
-
+from datetime import datetime
 from flask import redirect, render_template, session
 from functools import wraps
+from werkzeug.security import check_password_hash
 
 
 def apology(message, code=400):
@@ -67,3 +68,19 @@ def lookup(symbol):
 def usd(value):
     """Format value as USD."""
     return f"${value:,.2f}"
+
+
+def get_time():
+    """Get current timestamp."""
+    return datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+
+
+def check_password(hash, password):
+    """Check if password is correct."""
+    if not password:
+        return apology("Must provide password!", 403)
+
+    if not check_password_hash(hash, password):
+        return apology("Invalid password!", 403)
+
+    return True
