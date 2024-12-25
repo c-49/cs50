@@ -121,19 +121,19 @@ def register():
 
         # Ensure username was submitted
         if not username:
-            return apology("must provide username", 403)
+            return apology("must provide username", 400)
 
         # Ensure password was submitted
         if not password:
-            return apology("must provide password", 403)
+            return apology("must provide password", 400)
 
         # Ensure confirmation was submitted
         if not confirmation:
-            return apology("must confirm password", 403)
+            return apology("must confirm password", 400)
 
         # Ensure passwords match
         if password != confirmation:
-            return apology("passwords must match", 403)
+            return apology("passwords must match", 4030)
 
         # Add the user to the database and handle duplicate username
         try:
