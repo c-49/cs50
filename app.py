@@ -84,7 +84,60 @@ def index():
 @login_required
 def buy():
     """Buy shares of stock"""
-    return apology("TODO")
+
+    # User reached route via POST (as by submitting a form via POST)
+    if request.method == "POST":
+        symbol = request.form.get("symbol")
+        shares = request.form.get("shares")
+
+        # Validate symbol
+        if not symbol:
+            return apology("must provide symbol", 400)
+
+        # Validate shares
+        try:
+            shares = int(shares)
+            if shares <= 0:
+                return apology("shares must be positive", 400)
+        except (ValueError, TypeError):
+            return apology("shares must be a positive integer", 400)
+
+        # Look up stock
+        stock = lookup(symbol)
+        if stock is None:
+            return apology("invalid symbol", 400)
+
+        # Calculate total cost
+        total_cost = stock["price"] * shares
+
+        # Check if user can afford the purchase
+        user_cash = db.execute("SELECT cash FROM users WHERE id = ?", session["user_id"])[0]["cash"]
+
+        if total_cost > user_cash:
+            return apology("can't afford", 400)
+
+        # Add transaction to database
+        db.execute("""
+            INSERT INTO transactions (user_id, symbol, shares, price)
+            VALUES (?, ?, ?, ?)
+        """, session["user_id"], stock["symbol"], shares, stock["price"])
+
+        # Update user's cash
+        db.execute("""
+            UPDATE users
+            SET cash = cash - ?
+            WHERE id = ?
+        """, total_cost, session["user_id"])
+
+        # Flash a success message
+        flash(f"Bought {shares} shares of {stock['symbol']} for {usd(total_cost)}!")
+
+        # Redirect user to home page
+        return redirect("/")
+
+    # User reached route via GET (as by clicking a link or via redirect)
+    else:
+        return render_template("buy.html")
 
 
 @app.route("/history")
