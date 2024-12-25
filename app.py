@@ -133,7 +133,7 @@ def register():
 
         # Ensure passwords match
         if password != confirmation:
-            return apology("passwords must match", 4030)
+            return apology("passwords must match", 400)
 
         # Add the user to the database and handle duplicate username
         try:
@@ -143,7 +143,7 @@ def register():
                 generate_password_hash(password)
             )
         except ValueError:
-            return apology("username already exists", 403)
+            return apology("username already exists", 400)
 
         # Log the user in
         session["user_id"] = id
