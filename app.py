@@ -117,19 +117,19 @@ def register():
     if request.method == "POST":
         # Ensure username was submitted
         if not request.form.get("username"):
-            return apology("must provide username", 400)
+            return apology("must provide username")
 
         # Ensure password was submitted
         elif not request.form.get("password"):
-            return apology("must provide password", 400)
+            return apology("must provide password")
 
         # Ensure confirmation was submitted
         elif not request.form.get("confirmation"):
-            return apology("must confirm password", 400)
+            return apology("must confirm password")
 
         # Ensure passwords match
         elif request.form.get("password") != request.form.get("confirmation"):
-            return apology("passwords must match", 400)
+            return apology("passwords must match")
 
         # Try to insert the new user into the database
         try:
@@ -141,7 +141,7 @@ def register():
 
         except ValueError:
             # If username already exists, return an apology
-            return apology("username already exists", 400)
+            return apology("username already exists")
 
         # Remember which user has logged in
         session["user_id"] = new_user
