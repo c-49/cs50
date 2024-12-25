@@ -121,19 +121,19 @@ def register():
 
         # Ensure username was submitted
         if not username:
-            return apology("must provide username", 400)
+            return apology("must provide username", 403)
 
         # Ensure password was submitted
         if not password:
-            return apology("must provide password", 400)
+            return apology("must provide password", 403)
 
         # Ensure confirmation was submitted
         if not confirmation:
-            return apology("must confirm password", 400)
+            return apology("must confirm password", 403)
 
         # Ensure passwords match
         if password != confirmation:
-            return apology("passwords must match", 400)
+            return apology("passwords must match", 403)
 
         # Add the user to the database and handle duplicate username
         try:
@@ -143,7 +143,7 @@ def register():
                 generate_password_hash(password)
             )
         except ValueError:
-            return apology("username already exists", 400)
+            return apology("username already exists", 403)
 
         # Log the user in
         session["user_id"] = id
