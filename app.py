@@ -134,9 +134,6 @@ def register():
         # Ensure passwords match
         if password != confirmation:
             return apology("passwords must match", 400)
-                # Make sure the name isn't registered already or the field is empty
-        if len(db.execute("SELECT * FROM users WHERE username = ?", username)) > 0:
-            return apology("Username already taken!", 400)
 
         # Add the user to the database and handle duplicate username
         try:
@@ -146,7 +143,7 @@ def register():
                 generate_password_hash(password)
             )
         except ValueError:
-            return apology("username already exists", 400)
+            return apology("username already exists", 200)
 
         # Log the user in
         session["user_id"] = id
