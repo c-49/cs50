@@ -111,7 +111,7 @@ def quote():
 
 @app.route("/register", methods=["GET", "POST"])
 def register():
-    """Register user."""
+    """Register user"""
 
     # User reached route via POST (as by submitting a form via POST)
     if request.method == "POST":
@@ -119,53 +119,41 @@ def register():
         password = request.form.get("password")
         confirmation = request.form.get("confirmation")
 
-        # Check for empty fields
-        if any(not field for field in [username, password, confirmation]):
-            return apology("Fields cannot be empty!")
+        # Ensure username was submitted
+        if not username:
+            return apology("must provide username", 400)
 
-        # Ensure username is at least 4 characters long
-        if len(username) < 4:
-            return apology("Username must be at least 4 characters long!", 403)
+        # Ensure password was submitted
+        if not password:
+            return apology("must provide password", 400)
 
-        # Ensure username consists only of characters and digits
-        if not username.isalnum():
-            return apology("Username must contain only characters and digits!", 403)
+        # Ensure confirmation was submitted
+        if not confirmation:
+            return apology("must confirm password", 400)
 
-        # Ensure password is stronger (has characters, digits, symbols)
-        if len(password) < 8:
-            return apology("Password must be at least 8 characters long!", 403)
-        if (
-            not re.search("[a-zA-Z]", password)
-            or not re.search("[0-9]", password)
-            or not re.search("[!@#$%^&*()]", password)
-        ):
-            return apology("Password must contain characters, digits and symbols!", 403)
-
-        # Check for password to be the same
+        # Ensure passwords match
         if password != confirmation:
-            return apology("Passwords do not match!", 400)
+            return apology("passwords must match", 400)
 
-        # Make sure the name isn't registered already or the field is empty
-        if len(db.execute("SELECT * FROM users WHERE username = ?", username)) > 0:
-            return apology("Username already taken!", 400)
+        # Add the user to the database and handle duplicate username
+        try:
+            id = db.execute(
+                "INSERT INTO users (username, hash) VALUES (?, ?)",
+                username,
+                generate_password_hash(password)
+            )
+        except ValueError:
+            return apology("username already exists", 400)
 
-        # Hash password
-        hashed_password = generate_password_hash(password)
-        # Add username & hashed password in the database
-        db.execute(
-            "INSERT INTO users (username, hash) VALUES (?, ?)",
-            username,
-            hashed_password,
-        )
+        # Log the user in
+        session["user_id"] = id
 
-        # Remember which user has logged in
-        rows = db.execute("SELECT * FROM users WHERE username = ?", username)
-        session["user_id"] = rows[0]["id"]
-
+        # Redirect to home page
         return redirect("/")
 
     # User reached route via GET (as by clicking a link or via redirect)
-    return render_template("register.html")
+    else:
+        return render_template("register.html")
 
 
 @app.route("/sell", methods=["GET", "POST"])
