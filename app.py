@@ -135,17 +135,15 @@ def register():
         if password != confirmation:
             return apology("passwords must match", 400)
 
-        # Check if username already exists
-        rows = db.execute("SELECT * FROM users WHERE username = ?", username)
-        if len(rows) > 0:
+        # Add the user to the database and handle duplicate username
+        try:
+            id = db.execute(
+                "INSERT INTO users (username, hash) VALUES (?, ?)",
+                username,
+                generate_password_hash(password)
+            )
+        except ValueError:
             return apology("username already exists", 400)
-
-        # Insert the new user
-        id = db.execute(
-            "INSERT INTO users (username, hash) VALUES (?, ?)",
-            username,
-            generate_password_hash(password)
-        )
 
         # Log the user in
         session["user_id"] = id
