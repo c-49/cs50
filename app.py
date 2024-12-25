@@ -135,23 +135,23 @@ def register():
         if password != confirmation:
             return apology("passwords must match", 400)
 
-        # Try to insert the new user into the database
-        try:
-            # Insert the new user
-            id = db.execute(
-                "INSERT INTO users (username, hash) VALUES (?, ?)",
-                username,
-                generate_password_hash(password)
-            )
-
-            # Log the user in
-            session["user_id"] = id
-
-            # Redirect to home page
-            return redirect("/")
-
-        except ValueError:
+        # Check if username already exists
+        rows = db.execute("SELECT * FROM users WHERE username = ?", username)
+        if len(rows) > 0:
             return apology("username already exists", 400)
+
+        # Insert the new user
+        id = db.execute(
+            "INSERT INTO users (username, hash) VALUES (?, ?)",
+            username,
+            generate_password_hash(password)
+        )
+
+        # Log the user in
+        session["user_id"] = id
+
+        # Redirect to home page
+        return redirect("/")
 
     # User reached route via GET (as by clicking a link or via redirect)
     else:
