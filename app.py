@@ -276,4 +276,77 @@ def register():
 @login_required
 def sell():
     """Sell shares of stock"""
-    return apology("TODO")
+
+    if request.method == "POST":
+        symbol = request.form.get("symbol")
+        shares = request.form.get("shares")
+
+        # Validate symbol
+        if not symbol:
+            return apology("must provide symbol", 400)
+
+        # Validate shares
+        try:
+            shares = int(shares)
+            if shares <= 0:
+                return apology("shares must be positive", 400)
+        except (ValueError, TypeError):
+            return apology("shares must be a positive integer", 400)
+
+        # Query database for user's shares of this stock
+        holdings = db.execute("""
+            SELECT SUM(shares) as total_shares
+            FROM transactions
+            WHERE user_id = ? AND symbol = ?
+            GROUP BY symbol
+        """, session["user_id"], symbol)
+
+        # Check if user owns the stock
+        if not holdings:
+            return apology("symbol not found in portfolio", 400)
+
+        user_shares = holdings[0]["total_shares"]
+
+        # Check if user has enough shares
+        if shares > user_shares:
+            return apology("too many shares", 400)
+
+        # Look up stock's current price
+        stock = lookup(symbol)
+        if stock is None:
+            return apology("invalid symbol", 400)
+
+        # Calculate sale proceeds
+        proceeds = stock["price"] * shares
+
+        # Record the sale (negative number of shares represents a sale)
+        db.execute("""
+            INSERT INTO transactions (user_id, symbol, shares, price)
+            VALUES (?, ?, ?, ?)
+        """, session["user_id"], symbol, -shares, stock["price"])
+
+        # Update user's cash
+        db.execute("""
+            UPDATE users
+            SET cash = cash + ?
+            WHERE id = ?
+        """, proceeds, session["user_id"])
+
+        # Flash success message
+        flash(f"Sold {shares} shares of {symbol} for {usd(proceeds)}!")
+
+        # Redirect user to home page
+        return redirect("/")
+
+    # User reached route via GET (as by clicking a link or via redirect)
+    else:
+        # Get user's stocks for the select menu
+        stocks = db.execute("""
+            SELECT symbol, SUM(shares) as total_shares
+            FROM transactions
+            WHERE user_id = ?
+            GROUP BY symbol
+            HAVING total_shares > 0
+        """, session["user_id"])
+
+        return render_template("sell.html", stocks=stocks)
