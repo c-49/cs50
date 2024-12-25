@@ -193,40 +193,49 @@ def quote():
 def register():
     """Register user"""
     if request.method == "POST":
-        username = request.form.get("username")
-        password = request.form.get("password")
-        confirmation = request.form.get("confirmation")
+        try:
+            username = request.form.get("username")
+            password = request.form.get("password")
+            confirmation = request.form.get("confirmation")
 
-        # Check for empty fields
-        if any(not field for field in [username, password, confirmation]):
-            return apology("Fields cannot be empty!", 400)
+            # Check for empty fields
+            if not username:
+                return apology("must provide username", 400)
+            if not password:
+                return apology("must provide password", 400)
+            if not confirmation:
+                return apology("must provide confirmation", 400)
 
-        # Check for password to be the same
-        if password != confirmation:
-            return apology("Passwords do not match!", 400)
+            # Check for password to be the same
+            if password != confirmation:
+                return apology("passwords do not match", 400)
 
-        # Make sure the name isn't registered already
-        if len(db.execute("SELECT * FROM users WHERE username = ?", username)) > 0:
-            return apology("Username already taken!", 400)
+            # Make sure the name isn't registered already
+            existing_user = db.execute("SELECT * FROM users WHERE username = ?", username)
+            if len(existing_user) != 0:
+                return apology("username already exists", 400)
 
-        # Hash password
-        hashed_password = generate_password_hash(password)
+            # Hash password and insert new user
+            hash = generate_password_hash(password)
+            result = db.execute("INSERT INTO users (username, hash) VALUES (?, ?)", username, hash)
 
-        # Add username & hashed password in the database
-        db.execute(
-            "INSERT INTO users (username, hash) VALUES (?, ?)",
-            username,
-            hashed_password,
-        )
+            if not result:
+                return apology("registration error", 400)
 
-        # Remember which user has logged in
-        rows = db.execute("SELECT * FROM users WHERE username = ?", username)
-        session["user_id"] = rows[0]["id"]
+            # Log them in
+            rows = db.execute("SELECT * FROM users WHERE username = ?", username)
+            session["user_id"] = rows[0]["id"]
 
-        # Redirect user to home page
-        return redirect("/")
+            # Redirect user to home page
+            return redirect("/")
 
-    return render_template("register.html")
+        except Exception as e:
+            print(f"Registration error: {str(e)}")
+            return apology("registration error", 400)
+
+    # User reached route via GET
+    else:
+        return render_template("register.html")
 
 
 @app.route("/sell", methods=["GET", "POST"])
