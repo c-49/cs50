@@ -1,51 +1,40 @@
-<!DOCTYPE html>
+{% extends "layout.html" %}
 
-<html lang="en">
-    <head>
-        <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500&display=swap" rel="stylesheet">
-        <link href="/static/styles.css" rel="stylesheet">
-        <title>Birthdays</title>
-    </head>
-    <body>
-        <div class="header">
-            <h1>Birthdays</h1>
-        </div>
-        <div class="container">
-            <div class="section">
+{% block title %}
+    Portfolio
+{% endblock %}
 
-                <h2>Add a Birthday</h2>
-                <!-- Create a form for users to submit a name, a month, and a day -->
-                <form method="post">
-                    <input type="text" name="first_name" placeholder="First Name" required>
-                    <input type="text" name="last_name" placeholder="Last Name" required>
-                    <input type="text" name="day" placeholder="Day" required>
-                    <input type="text" name="month" placeholder="Month" required>
-                    <input type="text" name="year" placeholder="Year" required>
-                    <button type="submit">Add Birthday</button>
-                </form>
-            </div>
-
-            <div class="section">
-
-                <h2>All Birthdays</h2>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Name</th>
-                            <th>Birthday</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <!-- Loop through the database entries to display them in this table -->
-                        {% for birthday in birthdays %}
-                        <tr>
-                            <td>{{ birthday["first_name"] }} {{ birthday["last_name"] }}</td>
-                            <td>{{ birthday["day"] }}/{{ birthday["month"] }}/{{ birthday["year"] }}</td>
-                        </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </body>
-</html>
+{% block main %}
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th class="text-start">Symbol</th>
+                <th class="text-start">Name</th>
+                <th class="text-end">Shares</th>
+                <th class="text-end">Price</th>
+                <th class="text-end">Total</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for stock in stocks %}
+            <tr>
+                <td class="text-start">{{ stock.symbol }}</td>
+                <td class="text-start">{{ stock.name }}</td>
+                <td class="text-end">{{ stock.shares }}</td>
+                <td class="text-end">{{ stock.price | usd }}</td>
+                <td class="text-end">{{ stock.total | usd }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+        <tfoot>
+            <tr>
+                <td colspan="4" class="text-end"><strong>Cash</strong></td>
+                <td class="text-end">{{ cash | usd }}</td>
+            </tr>
+            <tr>
+                <td colspan="4" class="text-end"><strong>TOTAL</strong></td>
+                <td class="text-end"><strong>{{ grand_total | usd }}</strong></td>
+            </tr>
+        </tfoot>
+    </table>
+{% endblock %}
