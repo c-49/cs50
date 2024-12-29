@@ -54,6 +54,7 @@ This repository documents my progression through CS50, from basic programming co
 Feel free to reach out if you have any questions about my work or would like to discuss potential opportunities.
 
 reithc4@gmail.com
+https://github.com/c-49
 
 ## Acknowledgments
 
