@@ -1,77 +1,64 @@
-# ai-text-analyzer
+# Harvard CS50 Assignments Portfolio
 
-#### Video Demo:  https://www.youtube.com/watch?v=ZLvD1Scc6GM
+This repository contains my completed assignments from Harvard's CS50: Introduction to Computer Science course. Each project demonstrates different programming concepts and problem-solving skills developed throughout the course.
 
-#### Description:
-The AI Text Tone Analyzer is a smart tool that reads your text and determines whether it expresses positive or negative sentiment. Like an emotional detector for words, it quickly analyzes your input to reveal whether the overall message carries a positive or negative tone. In a world where digital communication dominates, understanding the emotional impact of our written words has become increasingly crucial.
+## Course Overview
 
-The application is built with a clean separation between frontend and backend: `app.py` handles the core AI functionality and tone analysis processing, while the frontend leverages Vite and Vue for rapid development, coupled with a UI framework for seamless customization. This lightweight architecture ensures quick response times and easy maintenance. The decision to use Python for the backend was driven by its robust AI libraries and natural language processing capabilities, making it ideal for sentiment analysis tasks.
+CS50 is Harvard University's introduction to computer science and programming. The course covers a broad range of programming concepts, gradually progressing from basic algorithms to full web applications.
 
-The core frontend component, `ToneAnalyzer.vue`, manages communication with the backend by sending analysis requests and relaying the results to its parent component, which displays the sentiment feedback through an intuitive notification system. This modular approach not only enhances code organization but also facilitates future expansions and improvements. The Vue framework's reactive nature ensures that users receive real-time feedback as they interact with the application, creating a smooth and responsive experience.
+## Project Structure
 
-By utilizing modern web technologies and AI capabilities, this tool bridges the gap between written communication and emotional understanding. Whether you're crafting important business emails, social media posts, or personal messages, the Text Tone Analyzer helps ensure your message conveys the intended emotional tone. The combination of fast processing times, user-friendly interface, and accurate sentiment analysis makes it an invaluable tool for anyone who wants to communicate more effectively in the digital space.
-## Setup Instructions
-
-### Backend
-
-1. Create a virtual environment (recommended):
-    ```bash
-    python -m venv venv
-    ```
-
-2. Activate the virtual environment:
-
-   - **Windows:**
-     ```bash
-     .\venv\Scripts\activate
-     ```
-
-   - **Mac/Linux:**
-     ```bash
-     source venv/bin/activate
-     ```
-
-3. Install the required packages:
-    ```bash
-    pip install -r requirements.txt
-    ```
-
-4. Run the backend server:
-    ```bash
-    python app.py
-    ```
-
-Additionally, you can also do this to start the app:
-
-```bash
-cd ..
-cd front
-pnpm start-backend
+```
+cs50/
+├── Week 0/        # Scratch: Introduction to Programming Concepts
+├── Week 1/        # C: Basics of Programming
+├── Week 2/        # Arrays: Data Storage and Manipulation
+├── Week 3/        # Algorithms: Problem Solving Strategies
+├── Week 4/        # Memory: Understanding Computer Memory
+├── Week 5/        # Data Structures: Organization of Data
+├── Week 6/        # Python: High-level Programming
+├── Week 7/        # SQL: Database Management
+├── Week 8/        # HTML, CSS, JavaScript: Web Development
+└── Week 9/        # Flask: Web Applications
 ```
 
-### Frontend
+## Skills Demonstrated
 
-1. Navigate to the `front` directory:
-    ```bash
-    cd front
-    ```
+Throughout this course, I've developed proficiency in:
+- Programming fundamentals through Scratch
+- Low-level programming in C
+- Memory management and data structures
+- Python programming and its applications
+- Database design and SQL
+- Web development with HTML, CSS, and JavaScript
+- Building web applications using Flask
+- Problem-solving and algorithmic thinking
+- Debugging and testing strategies
 
-2. Install the required packages using pnpm:
-    ```bash
-    pnpm install
-    ```
+## Running the Projects
 
-3. Run the frontend development server:
-    ```bash
-    pnpm dev
-    ```
+Each week's folder contains its own set of projects and requirements:
+- Week 0: Projects can be viewed on Scratch website
+- Week 1-5: C programs require a C compiler
+- Week 6: Python scripts require Python 3
+- Week 7: SQL projects require a database management system
+- Week 8: Web projects can be viewed in any modern browser
+- Week 9: Flask projects require Python and Flask installation
 
-### Running the Project
+## Course Completion
 
-1. Ensure the backend server is running (see Backend section).
-2. Ensure the frontend server is running (see Frontend section).
-3. Open your browser and navigate to `http://localhost:5173` to use the application.
-4. You may need to open chrome to disable CORS check. You can do so by doing Windows + r and running
-```bash
-chrome.exe --user-data-dir="C://Chrome dev session" --disable-web-security
-```
+This repository documents my progression through CS50, from basic programming concepts to developing full-stack web applications. Each assignment represents a step in my journey to becoming a more proficient programmer.
+
+## Contact
+
+Feel free to reach out if you have any questions about my work or would like to discuss potential opportunities.
+
+reithc4@gmail.com
+
+## Acknowledgments
+
+- Harvard CS50 course staff and teaching assistants
+- CS50 community for their support and resources
+
+---
+**Note**: This repository exists to showcase my learning journey and coding skills. Please refer to CS50's academic honesty policy if you're currently taking the course.
