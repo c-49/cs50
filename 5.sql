@@ -1,4 +1,2 @@
-SELECT title, year
-FROM movies
-WHERE title LIKE "Harry Potter%"
-ORDER BY year;
+SELECT AVG(energy)
+FROM songs;
