@@ -1,6 +1,11 @@
-This person streamed some of the more popular songs from 2018, including songs by Drake and XXXTentacion
+sort1 uses: Bubble
 
-From their choices, it seems like some emotional and strong songs, while also somewhat having a rebelious tone,
+How do you know?: Runs faster on already sorted data
 
-Blue: Blues are wistful or emotional, and this hue reflects listeners who seek out music to feel their feelings out loud.
-Orange: Oranges are the rebellious and bold type. They share a need for high-energy, confidence-boosting sounds.
+sort2 uses: Merge
+
+How do you know?: It's consitent in all datasets
+
+sort3 uses: Selection
+
+How do you know?: It has poor speed on all three files, but on smaller datasets its a bit quicker, showing the performance changes as it growa.
